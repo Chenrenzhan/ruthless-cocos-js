@@ -20,3 +20,7 @@ var g_resources = [];
 for (var i in res) {
     g_resources.push(res[i]);
 }
+
+// 还不明白有什么用
+//jsb.fileUtils.addSearchPath("res/ui/");
+//jsb.fileUtils.addSearchPath("res/eff/");

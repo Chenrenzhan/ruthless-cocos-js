@@ -11,6 +11,7 @@ var HelloWorldLayer = cc.Layer.extend({
         //    you may modify it.
         // ask the window size
         var size = cc.winSize;
+        console.log(size)
 
         /////////////////////////////
         // 3. add your codes below...
@@ -23,13 +24,22 @@ var HelloWorldLayer = cc.Layer.extend({
         // add the label as a child to this layer
         this.addChild(helloLabel, 5);
 
+
         // add "HelloWorld" splash screen"
-        this.sprite = new cc.Sprite(res.igMainBg);
-        this.sprite.attr({
-            x: size.width / 2,
-            y: size.height / 2
-        });
-        this.addChild(this.sprite, 0);
+        //this.sprite = new cc.Sprite(res.igMainBg);
+        //this.sprite.attr({
+        //    x: size.width / 2,
+        //    y: size.height / 2
+        //});
+        //this.addChild(this.sprite, 0);
+
+        var loadingLayer = new LoadingLayer();
+        this.addChild(loadingLayer);
+
+        //test
+        //console.log(LogTool.OPENLOGFLAG);
+        LogTool.c("normal log");
+        LogTool.e("error log")
 
         return true;
     }

@@ -13,6 +13,10 @@
 
     "jsList" : [
         "src/resource.js",
-        "src/app.js"
+        "src/app.js",
+        "src/LoadingPage.js",
+        "src/BaseUtil/BaseLayer.js",
+        "src/BaseUtil/GlobalInit.js",
+        "src/BaseUtil/LogTool.js"
     ]
 }
