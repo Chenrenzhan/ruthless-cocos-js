@@ -11,60 +11,65 @@
       if (this.OPENLOGFLAG) {
         return console.error("ErrorLog : " + errMsg);
       }
+    },
+    dir: function(obj) {
+      if (this.OPENLOGFLAG) {
+        return console.dir(obj);
+      }
     }
   };
 
 
   /*
   
-    console һЩ����
+    console 一些函数
    */
 
 
   /*
   console.debug(object[, object, ...])
-    �ڿ���̨����һ����Ϣ������һ��ָ����������λ�õĳ����ӡ�������ֱ���ڿ���̨����������Ͳ������ֳ����ӣ���console.log()һ������
+    在控制台输出一条消息，包含一个指向代码调用位置的超链接。假如是直接在控制台输入该命令，就不会出现超链接（和console.log()一样）。
   
   console.info(object[, object, ...])
-    �ڿ���̨����һ�����С���Ϣ��ͼ������Ϣ��һ��ָ����������λ�õĳ����ӡ�
+    在控制台输出一条带有“信息”图标的消息和一个指向代码调用位置的超链接。
   
   console.warn(object[, object, ...])
-    �ڿ���̨����һ�����С����桱ͼ������Ϣ��һ��ָ����������λ�õĳ����ӡ�
+    在控制台输出一条带有“警告”图标的消息和一个指向代码调用位置的超链接。
   
   console.error(object[, object, ...])
-    �ڿ���̨����һ�����С�������ͼ������Ϣ��һ��ָ����������λ�õĳ����ӡ�
+    在控制台输出一条带有“错误”图标的消息和一个指向代码调用位置的超链接。
   
   console.assert(expression[, object, ...])
-    ���Ա���ʽexpression�Ƿ�Ϊ�档���������棬���ڿ���̨дһ����Ϣ���׳��쳣
+    测试表达式expression是否为真。如果不是真，会在控制台写一条消息并抛出异常
   
   console.dir(object)
-    ���б���ʽ����һ���������������ԣ��е������鿴DOM���������ơ�
+    以列表形式输出一个对象的所有属性，有点和你查看DOM窗口相类似。
   
   console.dirxml(node)
-    ����һ��HTML����XMLԪ�ص�XMLԴ���롣������HTML���ڿ��������ơ�
+    输出一个HTML或者XML元素的XML源代码。和你在HTML窗口看到的相似。
   
   console.trace()
-    ����׷�ٺ����ĵ��ù켣��
+    用来追踪函数的调用轨迹。
     Prints an interactive stack trace of JavaScript execution at the point where it is called.
     The stack trace details the functions on the stack, as well as the values that were passed as arguments to each function. You can click each function to take you to its source in the Script tab, and click each argument value to inspect it in the DOM or HTML tabs.
   
   console.group(object[, object, ...])
-    ����һ����Ϣ��������һ��Ƕ�׿飬���е����ݶ�������������console.groupEnd()�رտ顣����������Ƕ��ʹ�á�
+    输出一条消息，并打开一个嵌套块，块中的内容都会缩进。调用console.groupEnd()关闭块。该命令可以嵌套使用。
   
   console.groupEnd()
-    �ر�����һ����console.group�򿪵Ŀ顣
+    关闭最近一个由console.group打开的块。
   
   console.time(name)
-    ����һ������Ϊname�ļ�ʱ��������console.timeEnd(name)ֹͣ��ʱ������������ʱ�䣨���룩��
+    创建一个名字为name的计时器，调用console.timeEnd(name)停止计时器并输出所耗时间（毫秒）。
   
   console.timeEnd(name)
-    ֹͣͬ���ļ�ʱ������������ʱ�䣨���룩��
+    停止同名的计时器并输出所耗时间（毫秒）。
   
   console.profile([title])
-    ����Javascript���ܲ��Կ��ء���ѡ����title���ڴ�ӡ���ܲ��Ա���ʱ�ڱ����Ŀ�ͷ������
+    打开Javascript性能测试开关。可选参数title会在打印性能测试报告时在报告的开头输出。
   
   console.profileEnd()
-    �ر�Javascript���ܲ��Կ��ز��������档
+    关闭Javascript性能测试开关并输出报告。
   
   console.count([title])
     Writes the number of times that the line of code where count was called was executed. The optional argument title will print a message in addition to the number of the count.

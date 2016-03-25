@@ -1,0 +1,49 @@
+###
+  带关闭按钮的对话框
+###
+
+@Dialog = cc.Layer.extend
+  dialogLayer: null
+  popDialog : null
+  btnClose: null
+
+  ctor : ->
+    @_super(cc.color(0,0,0, 0))
+    @initDialog()
+    @initCloseBtn()
+
+  initDialog : ->
+    # 创建弹窗背景图片
+    stDialogBg = new cc.Sprite res.igDialogBg
+    # 创建一个layer用于存放弹窗，layer的宽和高等于弹窗图片的大小
+    @dialogLayer = new cc.LayerColor cc.color(0,0,0,0), stDialogBg.width, stDialogBg.height
+    @dialogLayer.attr
+      x : THIS.winSize.width / 2 - @dialogLayer.width / 2
+      y : THIS.winSize.height / 2 - @dialogLayer.height / 2
+
+    stDialogBg.attr
+      x : @dialogLayer.width / 2
+      y : @dialogLayer.height / 2
+
+    @dialogLayer.addChild stDialogBg, 0
+    @popDialog = new PopDialog @dialogLayer, true, THIS.isCloseDialogOutside
+    @addChild @popDialog
+
+  initCloseBtn : ->
+    @btnClose = new ccui.Button()
+    @btnClose.loadTextureNormal res.igBtnClose, ccui.Widget.LOCAL_TEXTURE
+    @btnClose.setPressedActionEnabled true
+    @btnClose.attr
+      x: @dialogLayer.width - 40
+      y: @dialogLayer.height - 40
+    @btnClose.setTouchEnabled true
+    @dialogLayer.addChild @btnClose, 5
+
+    self = @
+
+    @btnClose.addTouchEventListener (touch, event)->
+      if event is ccui.Widget.TOUCH_ENDED
+        LogTool.c "点击关闭按钮"
+#        LogTool.dir @popDialog
+        self.popDialog.hidden -> LogTool.c "关闭了对话框"
+    , @btnClose

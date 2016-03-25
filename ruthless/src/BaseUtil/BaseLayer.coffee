@@ -1,29 +1,29 @@
 
 @BaseLayer = cc.Layer.extend
-	_bgFrame: null 
-	_oktouch: false 
+	_bgFrame: null
+	_oktouch: false
 	_showbg: false
 	_showbgAcion: false
 
 	ctor: ->
 		@_super()
 
-		#äÖÈ¾Ò»¸ö±³¾°²ã£¬Ä¬ÈÏÎªºÚÉ«µÄ°ëÍ¸Ã÷µÄ
+		#æ¸²æŸ“ä¸€ä¸ªèƒŒæ™¯å±‚ï¼Œé»˜è®¤ä¸ºé»‘è‰²çš„åŠé€æ˜çš„
 		if @_showbg
-			#±³¾°
+			#èƒŒæ™¯
 			bgFrame = cc.LayerColor cc.color 0,0,0,200
 			@addChild bgFrame, 0
 			@_bgFrame = bgFrame
 			@setAnchorPoint cc.p 0.5, 0.5
 
-			#ÉèÖÃµ±Ç°²ãÀïÃæËùÓĞ½ÚµãµÄÃèµãÒ²ºÍ¸Ã²ãÏàÍ¬
-			@ignoreAnchorPointForPosition false 
-			@setContentSize winSize 
-			@setPosition cc.p winSize.width/2, winSize.height/2
+			#è®¾ç½®å½“å‰å±‚é‡Œé¢æ‰€æœ‰èŠ‚ç‚¹çš„æç‚¹ä¹Ÿå’Œè¯¥å±‚ç›¸åŒ
+			@ignoreAnchorPointForPosition false
+			@setContentSize THIS.winSize
+			@setPosition cc.p THIS.winSize.width/2, THIS.winSize.height/2
 
-		#¿ªÆôµ×²ã²»¿Éµã»÷´¥Ãş£¨²ãÒÔÏÂµÄUI¶¼²»¿É±»µã»÷£©
+		#å¼€å¯åº•å±‚ä¸å¯ç‚¹å‡»è§¦æ‘¸ï¼ˆå±‚ä»¥ä¸‹çš„UIéƒ½ä¸å¯è¢«ç‚¹å‡»ï¼‰
 		if this._oktouch
-			#µã»÷Ê±¼ä
+			#ç‚¹å‡»æ—¶é—´
 			cc.eventManager.addListener
 				event: cc.EventListener.TOUCH_ONE_BY_ONE,
 				swallowTouches: true,
@@ -31,7 +31,7 @@
 					return true
 			, @
 
-		#¿ªÆô´ò¿ª´°ÌåÊÇ´øµÄÌØĞ§
+		#å¼€å¯æ‰“å¼€çª—ä½“æ˜¯å¸¦çš„ç‰¹æ•ˆ
 		if @._showbgAcion
 			self = this
 			self.setScale(0.8)
@@ -48,10 +48,10 @@
 		ccs.uiReader.widgetFromJsonFile file
 
 	setBgColor: (color) ->
-		@._bgFrame.setColor color
+		@_bgFrame.setColor color
 
 	onEnter : ->
-		@._super()
+		@_super()
 
 	onExit: ->
-		@._super()
+		@_super()

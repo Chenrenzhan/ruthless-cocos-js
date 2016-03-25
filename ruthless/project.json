@@ -9,14 +9,28 @@
     "renderMode" : 0,
     "engineDir":"frameworks/cocos2d-html5",
 
-    "modules" : ["cocos2d"],
+    "modules" : ["cocos2d","extensions"],
+
 
     "jsList" : [
         "src/resource.js",
-        "src/app.js",
-        "src/LoadingPage.js",
+
+        "src/BaseUtil/InitUtil.js",
         "src/BaseUtil/BaseLayer.js",
-        "src/BaseUtil/GlobalInit.js",
-        "src/BaseUtil/LogTool.js"
+        "src/BaseUtil/LogTool.js",
+        "src/BaseUtil/PopDialog.js",
+        "src/widget/Dialog.js",
+        "src/widget/MovingNumber.js",
+
+        "src/app.js",
+        "src/LoadingScene.js",
+        "src/LoaderScene.js",
+        "src/MenuDialog.js",
+        "src/PlayGameScene.js",
+        "src/MainGameScene.js",
+        "src/GameSettingDialog.js",
+        "src/MusicSettingDialog.js",
+        "src/DifficultSettingDialog.js",
+        "src/BackConfirmDialog.js"
     ]
 }

@@ -11,7 +11,6 @@ var HelloWorldLayer = cc.Layer.extend({
         //    you may modify it.
         // ask the window size
         var size = cc.winSize;
-        console.log(size)
 
         /////////////////////////////
         // 3. add your codes below...
@@ -38,8 +37,11 @@ var HelloWorldLayer = cc.Layer.extend({
 
         //test
         //console.log(LogTool.OPENLOGFLAG);
-        LogTool.c("normal log");
-        LogTool.e("error log")
+        //LogTool.c(BaseLayer);
+        //LogTool.e("error log");
+
+        //LogTool.dir(BaseLayer);
+        //LogTool.dir(PopDialog);
 
         return true;
     }
