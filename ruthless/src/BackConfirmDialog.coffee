@@ -3,29 +3,29 @@
 ###
 
 @BackConfirmDialog = Dialog.extend
-  btnOk : null
-  btnCancel : null
+  btnAgain : null
+  btnBack : null
 
   funOk : null  # 确认回调函数
   funCancel : null # 取消回调函数
 
   ctor : ->
     @_super()
-    @initBtnOk()
-    @initBtnCancel()
+    @initBtnAgain()
+    @initBtnBack()
 
-  initBtnOk : ->
-    @btnOk = new ccui.Button()
-    @btnOk.loadTextureNormal res.igBtnOk, ccui.Widget.LOCAL_TEXTURE
-    @btnOk.setPressedActionEnabled true
-    @btnOk.setTouchEnabled true
-    @btnOk.attr
+  initBtnAgain : ->
+    @btnAgain = new ccui.Button()
+    @btnAgain.loadTextureNormal res.igBtnOk, ccui.Widget.LOCAL_TEXTURE
+    @btnAgain.setPressedActionEnabled true
+    @btnAgain.setTouchEnabled true
+    @btnAgain.attr
       x: @dialogLayer.width / 2
-      y: @dialogLayer.height / 2 + @btnOk.height / 2 + 25
+      y: @dialogLayer.height / 2 + @btnAgain.height / 2 + 25
 
-    @dialogLayer.addChild @btnOk, 5
+    @dialogLayer.addChild @btnAgain, 5
     self = @
-    @btnOk.addTouchEventListener (touch, event)->
+    @btnAgain.addTouchEventListener (touch, event)->
       if event is ccui.Widget.TOUCH_ENDED
         LogTool.c "点击确认关闭按钮"
         try
@@ -38,20 +38,20 @@
 
         self.popDialog.hidden()
         cc.director.popScene()
-    , @btnOk
+    , @btnAgain
 
-  initBtnCancel : ->
-    @btnCancel = new ccui.Button()
-    @btnCancel.loadTextureNormal res.igBtnCancel, ccui.Widget.LOCAL_TEXTURE
-    @btnCancel.setPressedActionEnabled true
-    @btnCancel.setTouchEnabled true
-    @btnCancel.attr
+  initBtnBack : ->
+    @btnBack = new ccui.Button()
+    @btnBack.loadTextureNormal res.igBtnCancel, ccui.Widget.LOCAL_TEXTURE
+    @btnBack.setPressedActionEnabled true
+    @btnBack.setTouchEnabled true
+    @btnBack.attr
       x: @dialogLayer.width / 2
-      y: @dialogLayer.height / 2 - @btnCancel.height / 2 - 25
+      y: @dialogLayer.height / 2 - @btnBack.height / 2 - 25
 
-    @dialogLayer.addChild @btnCancel, 5
+    @dialogLayer.addChild @btnBack, 5
     self = @
-    @btnCancel.addTouchEventListener (touch, event)->
+    @btnBack.addTouchEventListener (touch, event)->
       if event is ccui.Widget.TOUCH_ENDED
         LogTool.c "点击取消按钮"
         try
@@ -62,4 +62,5 @@
         catch error
           LogTool.c error
         self.popDialog.hidden()
-    , @btnCancel
+    , @btnBack
+

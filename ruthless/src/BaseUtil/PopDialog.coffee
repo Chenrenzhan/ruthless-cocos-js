@@ -7,6 +7,7 @@
     flag : false,               #如果为真，则代弹窗被关闭掉
     touchbg_flag : false,       #如果为真，当点击黑色背景层的时候，弹窗会关掉. 默认为false,若为true，则存放弹窗的layer必须设置宽高
     isShow : true,              #弹窗一开始是否为可见,默认为true
+    hiddenCallback : null       #隐藏回调
 
     ctor: (layer, isShow, touchbg_flag) ->
         @_super()
@@ -31,9 +32,6 @@
     #初始化黑色遮罩
     initBlackLayer: ->
         @blackLayer = new cc.LayerColor cc.color 0,0,0,120
-#        LogTool.c "width : #{@blackLayer.width} + ; height : #{@blackLayer.height}"
-#        LogTool.c "x : #{@blackLayer.x} + ; y : #{@blackLayer.y}"
-
         @show() if @isShow
 
         @addChild @blackLayer
@@ -53,10 +51,9 @@
                     h = self.tcLayer.height
                     tx = parseInt touch.getLocation().x
                     ty = parseInt touch.getLocation().y
-
                     if not (tx >= x and tx <= x + w and ty >= y and ty <= y + h)
                         self.flag = true
-                        self.hidden()
+                        self.hidden(self.hiddenCallback)
 
                 return true
 
@@ -80,11 +77,10 @@
         @blackLayer.runAction fadeIn
 
         @tcLayer.scale = 0
-        scaleTo = new cc.scaleTo(0.4, 1).easing(cc.easeElasticOut 0.7)
+        scaleTo = new cc.ScaleTo(0.4, 1).easing(cc.easeElasticOut 0.7)
 
         func = new cc.CallFunc (e)->
             fun() if typeof fun isnt "undefined"
-
         seq = new cc.Sequence scaleTo, func
         @tcLayer.runAction seq
         @addListener()
@@ -92,12 +88,17 @@
     #隐藏
     hidden: (fun)->
         self = @
-        scaleTo = new cc.scaleTo(0.4, 0).easing(cc.easeElasticOut 0.7)
-
+        scaleTo = new cc.ScaleTo(0.4, 0).easing(cc.easeElasticOut 0.7)
         func = new cc.CallFunc (e) ->
             self.deleteListener()
             self.visible = false
-            fun() if typeof fun isnt "undefined"
+            try
+                if typeof fun is "function"
+                    fun()
+                else
+                    LogTool.c "fun is not a function"
+            catch error
+                LogTool.c error
 
         seq = new cc.Sequence scaleTo, func
         @tcLayer.runAction seq

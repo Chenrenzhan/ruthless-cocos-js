@@ -5,25 +5,31 @@
  */
 
 (function() {
-  this.PlayGameScene = BaseLayer.extend({
+  this.PlayGameLayer = BaseLayer.extend({
     stMainBg: null,
     btnBack: null,
     stStar: null,
     lbResultNumber: null,
+    resultNumber: null,
+    numbersValues: null,
     lbHighestRecord: null,
     score: null,
     punish: null,
-    time: null,
+    timeSeconds: null,
+    sec: 0,
     lbFirst: null,
     lbSecond: null,
     mode: null,
+    difficult: null,
     numberSprites: null,
     resultNumber: null,
     firstSelectedNumber: null,
-    countNumber: 0,
+    createNumber: 0,
+    speed: 0.1,
     ctor: function(_type) {
       this._super();
       this.mode = _type;
+      LogTool.c("_type  " + _type);
       this.initMainBg();
       this.initBackArrows();
       this.initStar();
@@ -33,8 +39,8 @@
     initMainBg: function() {
       this.stMainBg = new cc.Sprite(res.igGameBg);
       this.stMainBg.attr({
-        x: THIS.winSize.width / 2,
-        y: THIS.winSize.height / 2
+        x: cc.winSize.width / 2,
+        y: cc.winSize.height / 2
       });
       return this.addChild(this.stMainBg, 0);
     },
@@ -46,9 +52,9 @@
       this.btnBack.setTouchEnabled(true);
       this.btnBack.attr({
         x: this.btnBack.width / 2 + 20,
-        y: THIS.winSize.height - this.btnBack.height / 2 - 20
+        y: cc.winSize.height - this.btnBack.height / 2 - 20
       });
-      this.addChild(this.btnBack, 15);
+      this.addChild(this.btnBack, 50);
       self = this;
       return this.btnBack.addTouchEventListener(function(touch, event) {
         var backDialog;
@@ -56,6 +62,14 @@
           LogTool.c("返回");
           self.pauseNumbers(self);
           backDialog = new BackConfirmDialog();
+          backDialog.setHiddenCallback(function() {
+            LogTool.c("hiddenCallback");
+            return self.resumeNumbers(self);
+          });
+          backDialog.closeCallback = function() {
+            LogTool.c("closeCallback");
+            return self.resumeNumbers(self);
+          };
           backDialog.funOk = function() {
             LogTool.c("click dialog ok button");
             return self.stopNumbers(self);
@@ -71,10 +85,10 @@
     initStar: function() {
       this.stStar = new cc.Sprite(res.igStar);
       this.stStar.attr({
-        x: THIS.winSize.width / 2,
-        y: THIS.winSize.height - this.stStar.height / 2 - 30
+        x: cc.winSize.width / 2,
+        y: cc.winSize.height - this.stStar.height / 2 - 30
       });
-      this.lbResultNumber = cc.LabelTTF.createWithFontDefinition();
+      this.lbResultNumber = new cc.LabelTTF("0");
       this.lbResultNumber.fontSize = 60;
       this.lbResultNumber.fillStyle = cc.color(255, 0, 0, 255);
       this.lbResultNumber.string = "25";
@@ -91,8 +105,8 @@
       label.fillStyle = cc.color(79, 79, 79, 255);
       label.fontSize = 35;
       label.attr({
-        x: THIS.winSize.width - 300,
-        y: THIS.winSize.height - label.height / 2 - 30
+        x: cc.winSize.width - 300,
+        y: cc.winSize.height - label.height / 2 - 30
       });
       this.addChild(label, 0);
       this.lbHighestRecord = new cc.LabelTTF();
@@ -109,15 +123,14 @@
       var stFirst, stSecond;
       stFirst = new cc.Sprite(res.igScoreFrame);
       stFirst.attr({
-        x: THIS.winSize.width - stFirst.width / 2 - 50,
-        y: THIS.winSize.height - stFirst.height / 2 - 10
+        x: cc.winSize.width - stFirst.width / 2 - 50,
+        y: cc.winSize.height - stFirst.height / 2 - 10
       });
       this.addChild(stFirst, 20);
       this.lbFirst = new cc.LabelTTF();
       this.lbFirst.fontSize = 40;
       this.lbFirst.fillStyle = cc.color(20, 20, 20, 255);
       this.lbFirst.setDimensions(0, 0);
-      this.lbFirst.string = 144;
       this.lbFirst.attr({
         x: stFirst.width / 2,
         y: stFirst.height / 2
@@ -133,32 +146,51 @@
       this.lbSecond.fontSize = 40;
       this.lbSecond.fillStyle = cc.color(79, 79, 79, 255);
       this.lbSecond.setDimensions(0, 0);
-      this.lbSecond.string = "03:00";
       this.lbSecond.attr({
         x: stSecond.width / 2,
         y: stSecond.height / 2
       });
-      return stSecond.addChild(this.lbSecond, 0);
+      stSecond.addChild(this.lbSecond, 0);
+      return this.resetScore(this);
+    },
+    resetScore: function(self) {
+      var times;
+      self.lbFirst.string = 0;
+      switch (self.mode) {
+        case THIS.gameMode.classics:
+          return self.lbSecond.string = THIS.maxError + "";
+        case THIS.gameMode.challenge:
+          self.lbSecond.string = THIS.countDown.challenge;
+          times = THIS.countDown.challenge.split(":");
+          self.timeSeconds = parseInt(times[0]) * 60 + parseInt(times[1]);
+          return this.scheduleUpdate();
+        case THIS.gameMode.arcade:
+          self.lbSecond.string = THIS.countDown.arcade;
+          times = THIS.countDown.arcade.split(":");
+          self.timeSeconds = parseInt(times[0]) * 60 + parseInt(times[1]);
+          return this.scheduleUpdate();
+      }
     },
     initMovingNumber: function() {
       var i, j, results;
+      this.generateNumber();
+      this.lbResultNumber.string = this.resultNumber + "";
       this.numberSprites = new Array();
       results = [];
       for (i = j = 0; j <= 5; i = ++j) {
         results.push(this.scheduleOnce(function() {
-          return this.numberSprites.push(this.generateNumber());
-        }, Math.random() * 5));
+          return this.numberSprites.push(this.generateNumberSprite());
+        }, Math.random() * THIS.randomFall));
       }
       return results;
     },
-    generateNumber: function() {
-      var number, numberSprite, self;
+    generateNumberSprite: function() {
+      var numberSprite, self;
       self = this;
-      number = Math.round(Math.random() * 100);
-      numberSprite = new MovingNumber(0.1, number);
-      self.countNumber++;
-      if (self.countNumber === THIS.numberCount) {
-        self.countNumber = 0;
+      numberSprite = new MovingNumber(this.speed, this.numbersValues[this.createNumber]);
+      self.createNumber++;
+      if (self.createNumber === THIS.numberCount) {
+        self.createNumber = 0;
         numberSprite.finishCallback = function() {
           return self.numberFallFinish(self);
         };
@@ -166,13 +198,51 @@
       this.addChild(numberSprite, 5);
       cc.eventManager.addListener(numberSprite.listener(function() {
         return function(nu) {
-          return LogTool.c("click number = " + nu);
+          var result, score;
+          if (self.firstSelectedNumber === null) {
+            return self.firstSelectedNumber = nu;
+          } else {
+            result = nu + self.firstSelectedNumber;
+            self.firstSelectedNumber = null;
+            if (result === self.resultNumber) {
+              score = self.lbFirst.string;
+              score++;
+              self.lbFirst.string = score;
+              return self.nextGame(self, true);
+            } else {
+              return self.errorNumber(self);
+            }
+          }
         };
       }), numberSprite);
       numberSprite.startAction(function() {
         return LogTool.c("start action");
       });
       return numberSprite;
+    },
+    generateNumber: function() {
+      this.numbersValues = new Array();
+      switch (THIS.gameDifficult) {
+        case THIS.difficult.low:
+          return this.generateAddNumber(THIS.difficultScope.low.max, THIS.difficultScope.low.min);
+        case THIS.difficult.middle:
+          return this.generateAddNumber(THIS.difficultScope.middle.max, THIS.difficultScope.middle.min);
+        case THIS.difficult.high:
+          return this.generateAddNumber(THIS.difficultScope.high.max, THIS.difficultScope.high.min);
+      }
+    },
+    generateAddNumber: function(max, min) {
+      var i, j, ref, results, value;
+      this.resultNumber = Math.random() * (max - min) + min;
+      this.resultNumber = Math.round(this.resultNumber);
+      results = [];
+      for (i = j = 0, ref = THIS.numberCount / 2; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
+        value = Math.random() * (this.resultNumber - min) + min;
+        value = Math.round(value);
+        this.numbersValues[i] = value;
+        results.push(this.numbersValues[i + THIS.numberCount / 2] = this.resultNumber - value);
+      }
+      return results;
     },
     pauseNumbers: function(self) {
       var j, len, number, ref, results;
@@ -213,8 +283,25 @@
         return results;
       }
     },
-    nextGame: function(self) {
-      var j, len, number, ref;
+    nextGame: function(self, isAcceler) {
+      var accelerometer, j, len, number, ref;
+      if (isAcceler == null) {
+        isAcceler = true;
+      }
+      if (isAcceler) {
+        accelerometer = 0.01;
+        if (THIS.gameDifficult === THIS.difficult.low) {
+          accelerometer = THIS.accelerometer.low;
+        }
+        if (THIS.gameDifficult === THIS.difficult.middle) {
+          accelerometer = THIS.accelerometer.middle;
+        }
+        if (THIS.gameDifficult === THIS.difficult.high) {
+          accelerometer = THIS.accelerometer.high;
+        }
+        self.speed += accelerometer;
+      }
+      self.firstSelectedNumber = null;
       if (self.numberSprites !== null) {
         ref = self.numberSprites;
         for (j = 0, len = ref.length; j < len; j++) {
@@ -224,9 +311,120 @@
       }
       return self.initMovingNumber();
     },
+    newGame: function(self) {
+      self.speed = 0.1;
+      self.resetScore(self);
+      return self.nextGame(self, false);
+    },
     numberFallFinish: function(self) {
-      self.nextGame(self);
-      return self.countNumber = 0;
+      self.errorNumber(self);
+      return self.createNumber = 0;
+    },
+    errorNumber: function(self) {
+      var error, score;
+      switch (self.mode) {
+        case THIS.gameMode.classics:
+          error = self.lbSecond.string;
+          error--;
+          self.lbSecond.string = error;
+          if (error > 0) {
+            return self.nextGame(self, false);
+          } else {
+            return self.gameOver(self);
+          }
+          break;
+        case THIS.gameMode.challenge:
+        case THIS.gameMode.arcade:
+          score = self.lbFirst.string;
+          score--;
+          self.lbFirst.string = score;
+          if (score <= 0) {
+            return self.gameOver(self);
+          } else {
+            return self.nextGame(self, false);
+          }
+      }
+    },
+    gameOver: function(self) {
+      var highScore, isHigh, regameDialog, score;
+      self.stopNumbers(self);
+      score = self.lbFirst.string;
+      if (self.mode === THIS.gameMode.classics) {
+        highScore = THIS.highestRecord.classics;
+      }
+      if (self.mode === THIS.gameMode.challenge) {
+        highScore = THIS.highestRecord.challenge;
+      }
+      if (self.mode === THIS.gameMode.arcade) {
+        highScore = THIS.highestRecord.arcade;
+      }
+      isHigh = false;
+      if (score > highScore) {
+        isHigh = true;
+        switch (self.mode) {
+          case THIS.gameMode.classics:
+            THIS.highestRecord.classics = score;
+            THIS.LS.setItem(THIS.HIGH_CLASSIC, score);
+            break;
+          case THIS.gameMode.challenge:
+            THIS.highestRecord.challenge = score;
+            THIS.LS.setItem(THIS.HIGH_CHALLENGE, score);
+            break;
+          case THIS.gameMode.arcade:
+            THIS.highestRecord.arcade = score;
+            THIS.LS.setItem(THIS.HIGH_ARCADE, score);
+        }
+      }
+      regameDialog = new RegameDialog(isHigh);
+      regameDialog.setTouchbgFlag(false);
+      regameDialog.funOk = function() {
+        self.newGame(self);
+        self.btnBack.removeFromParent(true);
+        return self.initBackArrows();
+      };
+      regameDialog.funBack = function() {
+        return cc.director.popScene();
+      };
+      regameDialog.closeCallback = function() {
+        return cc.director.popScene();
+      };
+      regameDialog.setHiddenCallback(function() {
+        return cc.director.popScene();
+      });
+      return self.addChild(regameDialog, 25);
+    },
+    countDown: function(dt) {
+      var timeStr;
+      this.sec += dt;
+      if (this.sec >= 1) {
+        if (this.timeSeconds <= 0) {
+          LogTool.c(" 倒计时结束，游戏结束");
+          this.unscheduleUpdate();
+          this.gameOver(this);
+        } else {
+          this.timeSeconds--;
+          timeStr = moment(this.timeSeconds * 1000).format("mm:ss");
+          this.lbSecond.string = timeStr;
+        }
+        return this.sec = 0;
+      }
+    },
+    update: function(dt) {
+      return this.countDown(dt);
+    }
+  });
+
+  this.PlayGameScene = cc.Scene.extend({
+    mode: 0,
+    ctor: function(_type) {
+      this._super();
+      return this.mode = _type;
+    },
+    onEnter: function() {
+      var layer;
+      this._super();
+      layer = new PlayGameLayer(this.mode);
+      return this.addChild(layer);
     }
   });
 

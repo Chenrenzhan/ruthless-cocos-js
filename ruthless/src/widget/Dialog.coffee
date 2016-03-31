@@ -7,6 +7,8 @@
   popDialog : null
   btnClose: null
 
+  closeCallback : null # 关闭按钮回调
+
   ctor : ->
     @_super(cc.color(0,0,0, 0))
     @initDialog()
@@ -18,8 +20,8 @@
     # 创建一个layer用于存放弹窗，layer的宽和高等于弹窗图片的大小
     @dialogLayer = new cc.LayerColor cc.color(0,0,0,0), stDialogBg.width, stDialogBg.height
     @dialogLayer.attr
-      x : THIS.winSize.width / 2 - @dialogLayer.width / 2
-      y : THIS.winSize.height / 2 - @dialogLayer.height / 2
+      x : cc.winSize.width / 2 - @dialogLayer.width / 2
+      y : cc.winSize.height / 2 - @dialogLayer.height / 2
 
     stDialogBg.attr
       x : @dialogLayer.width / 2
@@ -44,6 +46,11 @@
     @btnClose.addTouchEventListener (touch, event)->
       if event is ccui.Widget.TOUCH_ENDED
         LogTool.c "点击关闭按钮"
-#        LogTool.dir @popDialog
-        self.popDialog.hidden -> LogTool.c "关闭了对话框"
+        self.popDialog.hidden self.closeCallback
     , @btnClose
+
+  setHiddenCallback : (fun) ->
+    @popDialog.hiddenCallback = fun
+
+  setTouchbgFlag : (flag) ->
+    @popDialog.touchbg_flag = flag

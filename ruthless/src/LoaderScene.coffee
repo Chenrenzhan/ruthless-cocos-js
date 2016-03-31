@@ -23,7 +23,6 @@
     self = @
     cc.Node.prototype.onExit.call self
     self._loadingLayer.setProgress 0
-#    LogTool.c self._loadingLayer.getProgress()
 
   initWithResources : (resources, cb, target)->
     resources = [resources] if cc.isString(resources)

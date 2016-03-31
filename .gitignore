@@ -8,6 +8,8 @@ local/
 build/
 frameworks/
 .idea/
+simulator/
+.gradle/
 
 #/////////////////////////////////////////////////////////////////////////////
 # Logs and databases
@@ -103,3 +105,4 @@ Icon
 
 # coffescript temp file
 *.js.map
+

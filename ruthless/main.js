@@ -68,11 +68,15 @@ cc.game.onStart = function(){
     // The game will be resized when browser size change
     cc.view.resizeWithBrowserSize(true);
     //load resources
-    // 预加载
+    // 预加载 LoaderScene
     LoaderScene.preload(g_resources, function () {
         // 加载第一个场景
+        cc.director.runScene(new MainGameScene());
+        //cc.director.runScene(new HelloWorldScene());
         // 延迟开始游戏界面
-        this.schedule(function(){return cc.director.runScene(new MainGameScene())}, THIS.loadFinishDelay);
+        // android de scheduleOnce函数不work
+        //this.scheduleOnce(function(){return cc.director.runScene(new MainGameScene())}, THIS.loadFinishDelay);
     }, this);
 };
+
 cc.game.run();

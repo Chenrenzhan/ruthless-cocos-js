@@ -5,16 +5,16 @@
 #正常输出
   c : (logMsg) ->
     if @OPENLOGFLAG
-      console.log "NormalLog : #{logMsg}"
+      cc.log "NormalLog : #{logMsg}"
 
 #错误输出
-  e : (errMsg) ->
-    if @OPENLOGFLAG
-      console.error "ErrorLog : #{errMsg}"
-
-  dir : (obj) ->
-    if @OPENLOGFLAG
-      console.dir(obj)
+#  e : (errMsg) ->
+#    if @OPENLOGFLAG
+#      console.error "ErrorLog : #{errMsg}"
+#
+#  dir : (obj) ->
+#    if @OPENLOGFLAG
+#      console.dir(obj)
 
 
 

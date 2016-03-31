@@ -40,16 +40,16 @@
   initMainBg : ->
     @stMainBg = new cc.Sprite res.igMainBg
     @stMainBg.attr
-      x: THIS.winSize.width / 2,
-      y: THIS.winSize.height / 2
+      x: cc.winSize.width / 2,
+      y: cc.winSize.height / 2
 
     @addChild @stMainBg, 0
 
   initTitle : ->
     @stTitle = new cc.Sprite res.igTitle
     @stTitle.attr
-      x: THIS.winSize.width / 2
-      y: THIS.winSize.height - 130
+      x: cc.winSize.width / 2
+      y: cc.winSize.height - 130
     @addChild @stTitle, 0
 
   initProgress : ->
@@ -59,14 +59,13 @@
     @pbLoading.loadSlidBallTextureNormal res.igBarSlider, ccui.Widget.LOCAL_TEXTURE
 
     rect = @pbLoading.getCapInsetsBarRenderer()
-    LogTool.c rect
 
     @pbLoading.setPercent 2 #97
     @pbLoading.setScale9Enabled false
     @pbLoading.enabled = false
 
     @pbLoading.attr
-      x: THIS.winSize.width / 2 - 50
+      x: cc.winSize.width / 2 - 50
       y: 180
 
     @stMainBg.addChild @pbLoading, 0
@@ -74,14 +73,14 @@
   initGarlic : ->
     @stGarlic = new cc.Sprite res.igGarlic
     @stGarlic.attr
-      x: THIS.winSize.width  - @stGarlic.width / 2 - 170
+      x: cc.winSize.width  - @stGarlic.width / 2 - 170
       y: @stGarlic.height / 2 + 150
     @addChild @stGarlic, 0
 
   initTip : ->
     @stTip = new cc.Sprite res.igTipFrame
     @stTip.attr
-      x: THIS.winSize.width - @stTip.width / 2 - 280
+      x: cc.winSize.width - @stTip.width / 2 - 280
       y: @stTip.height / 2 + 280
 
 

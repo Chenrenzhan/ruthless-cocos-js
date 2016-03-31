@@ -22,16 +22,16 @@
     initMainBg: function() {
       this.stMainBg = new cc.Sprite(res.igMainBg);
       this.stMainBg.attr({
-        x: THIS.winSize.width / 2,
-        y: THIS.winSize.height / 2
+        x: cc.winSize.width / 2,
+        y: cc.winSize.height / 2
       });
       return this.addChild(this.stMainBg, 0);
     },
     initTitle: function() {
       this.stTitle = new cc.Sprite(res.igTitle);
       this.stTitle.attr({
-        x: THIS.winSize.width / 2,
-        y: THIS.winSize.height - 130
+        x: cc.winSize.width / 2,
+        y: cc.winSize.height - 130
       });
       return this.addChild(this.stTitle, 0);
     },
@@ -42,12 +42,11 @@
       this.pbLoading.loadProgressBarTexture(res.igBarFront, ccui.Widget.LOCAL_TEXTURE);
       this.pbLoading.loadSlidBallTextureNormal(res.igBarSlider, ccui.Widget.LOCAL_TEXTURE);
       rect = this.pbLoading.getCapInsetsBarRenderer();
-      LogTool.c(rect);
       this.pbLoading.setPercent(2);
       this.pbLoading.setScale9Enabled(false);
       this.pbLoading.enabled = false;
       this.pbLoading.attr({
-        x: THIS.winSize.width / 2 - 50,
+        x: cc.winSize.width / 2 - 50,
         y: 180
       });
       return this.stMainBg.addChild(this.pbLoading, 0);
@@ -55,7 +54,7 @@
     initGarlic: function() {
       this.stGarlic = new cc.Sprite(res.igGarlic);
       this.stGarlic.attr({
-        x: THIS.winSize.width - this.stGarlic.width / 2 - 170,
+        x: cc.winSize.width - this.stGarlic.width / 2 - 170,
         y: this.stGarlic.height / 2 + 150
       });
       return this.addChild(this.stGarlic, 0);
@@ -63,7 +62,7 @@
     initTip: function() {
       this.stTip = new cc.Sprite(res.igTipFrame);
       this.stTip.attr({
-        x: THIS.winSize.width - this.stTip.width / 2 - 280,
+        x: cc.winSize.width - this.stTip.width / 2 - 280,
         y: this.stTip.height / 2 + 280
       });
       this.lbTip = new cc.LabelTTF("算个毛", "Arial", 50);

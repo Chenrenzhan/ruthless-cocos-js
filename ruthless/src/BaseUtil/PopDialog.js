@@ -7,6 +7,7 @@
     flag: false,
     touchbg_flag: false,
     isShow: true,
+    hiddenCallback: null,
     ctor: function(layer, isShow, touchbg_flag) {
       this._super();
       this.setLocalZOrder(10000);
@@ -46,7 +47,7 @@
             ty = parseInt(touch.getLocation().y);
             if (!(tx >= x && tx <= x + w && ty >= y && ty <= y + h)) {
               self.flag = true;
-              self.hidden();
+              self.hidden(self.hiddenCallback);
             }
           }
           return true;
@@ -70,7 +71,7 @@
       fadeIn = new cc.FadeTo(0.2, 120);
       this.blackLayer.runAction(fadeIn);
       this.tcLayer.scale = 0;
-      scaleTo = new cc.scaleTo(0.4, 1).easing(cc.easeElasticOut(0.7));
+      scaleTo = new cc.ScaleTo(0.4, 1).easing(cc.easeElasticOut(0.7));
       func = new cc.CallFunc(function(e) {
         if (typeof fun !== "undefined") {
           return fun();
@@ -83,12 +84,20 @@
     hidden: function(fun) {
       var fadeOut, func, scaleTo, self, seq;
       self = this;
-      scaleTo = new cc.scaleTo(0.4, 0).easing(cc.easeElasticOut(0.7));
+      scaleTo = new cc.ScaleTo(0.4, 0).easing(cc.easeElasticOut(0.7));
       func = new cc.CallFunc(function(e) {
+        var error, error1;
         self.deleteListener();
         self.visible = false;
-        if (typeof fun !== "undefined") {
-          return fun();
+        try {
+          if (typeof fun === "function") {
+            return fun();
+          } else {
+            return LogTool.c("fun is not a function");
+          }
+        } catch (error1) {
+          error = error1;
+          return LogTool.c(error);
         }
       });
       seq = new cc.Sequence(scaleTo, func);

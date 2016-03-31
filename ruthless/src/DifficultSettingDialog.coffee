@@ -73,18 +73,21 @@
 
   selectLow : ->
     THIS.gameDifficult = THIS.difficult.low
+    THIS.LS.setItem THIS.GAME_DIFFICULT, THIS.gameDifficult
     @low.selected() if @low?
     @middle.unselected() if @middle?
     @high.unselected() if @high?
 
   selectMiddle : ->
     THIS.gameDifficult = THIS.difficult.middle
+    THIS.LS.setItem THIS.GAME_DIFFICULT, THIS.gameDifficult
     @low.unselected() if @low?
     @middle.selected() if @middle?
     @high.unselected() if @high?
 
   selectHigh : ->
     THIS.gameDifficult = THIS.difficult.high
+    THIS.LS.setItem THIS.GAME_DIFFICULT, THIS.gameDifficult
     @low.unselected() if @low?
     @middle.unselected() if @middle?
     @high.selected() if @high?

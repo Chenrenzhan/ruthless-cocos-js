@@ -9,6 +9,7 @@
     dialogLayer: null,
     popDialog: null,
     btnClose: null,
+    closeCallback: null,
     ctor: function() {
       this._super(cc.color(0, 0, 0, 0));
       this.initDialog();
@@ -19,8 +20,8 @@
       stDialogBg = new cc.Sprite(res.igDialogBg);
       this.dialogLayer = new cc.LayerColor(cc.color(0, 0, 0, 0), stDialogBg.width, stDialogBg.height);
       this.dialogLayer.attr({
-        x: THIS.winSize.width / 2 - this.dialogLayer.width / 2,
-        y: THIS.winSize.height / 2 - this.dialogLayer.height / 2
+        x: cc.winSize.width / 2 - this.dialogLayer.width / 2,
+        y: cc.winSize.height / 2 - this.dialogLayer.height / 2
       });
       stDialogBg.attr({
         x: this.dialogLayer.width / 2,
@@ -45,11 +46,15 @@
       return this.btnClose.addTouchEventListener(function(touch, event) {
         if (event === ccui.Widget.TOUCH_ENDED) {
           LogTool.c("点击关闭按钮");
-          return self.popDialog.hidden(function() {
-            return LogTool.c("关闭了对话框");
-          });
+          return self.popDialog.hidden(self.closeCallback);
         }
       }, this.btnClose);
+    },
+    setHiddenCallback: function(fun) {
+      return this.popDialog.hiddenCallback = fun;
+    },
+    setTouchbgFlag: function(flag) {
+      return this.popDialog.touchbg_flag = flag;
     }
   });
 

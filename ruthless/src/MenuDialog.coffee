@@ -71,9 +71,13 @@
       y: 100
 
     @dialogLayer.addChild @btnAbout, 5
-
+    self = @
     @btnAbout.addTouchEventListener (touch, event)->
       if event is ccui.Widget.TOUCH_ENDED
         LogTool.c "点击关于游戏按钮"
+        self.dialog.popDialog.hidden()
+        self.scheduleOnce ->
+          self.addChild new AboutGameDialog(), 5
+        , THIS.nextDialogDelay
     , @btnAbout
 

@@ -6,14 +6,6 @@
 
 (function() {
   this.MovingNumber = cc.Sprite.extend({
-    parent: null,
-    speed: null,
-    number: null,
-    lbNumber: null,
-    rotationAngle: null,
-    moveAction: null,
-    rotateAction: null,
-    finishCallback: null,
     ctor: function(_speed, _number) {
       this._super();
       this.speed = _speed;
@@ -29,12 +21,12 @@
       px = this.getRandomX();
       if (px < offsetSide) {
         px = offsetSide;
-      } else if (px > THIS.winSize.width - offsetSide) {
-        px = THIS.winSize.width - offsetSide;
+      } else if (px > cc.winSize.width - offsetSide) {
+        px = cc.winSize.width - offsetSide;
       }
       this.attr({
         x: px,
-        y: THIS.winSize.height + offsetSide / 2
+        y: cc.winSize.height + offsetSide / 2
       });
       this.setRotation(this.rotationAngle);
       this.lbNumber = new cc.LabelTTF("" + this.number);
@@ -50,14 +42,14 @@
       randomX = this.getRandomX();
       if (randomX < offsetSide) {
         offsetX = offsetSide - this.x;
-      } else if (randomX > THIS.winSize.width - offsetSide) {
-        offsetX = THIS.winSize.width - offsetSide - this.x;
+      } else if (randomX > cc.winSize.width - offsetSide) {
+        offsetX = cc.winSize.width - offsetSide - this.x;
       }
-      this.moveAction = cc.moveBy(1, cc.p(offsetX, -(THIS.winSize.height + offsetSide * 2))).speed(this.speed).easing(cc.easeIn(1.0));
+      this.moveAction = cc.moveBy(1, cc.p(offsetX, -(cc.winSize.height + offsetSide * 2))).speed(this.speed);
       return this.rotateAction = cc.rotateBy(THIS.rotationTime, 360, 360).repeatForever();
     },
     getRandomX: function() {
-      return Math.random() * (THIS.winSize.width - 40) + 20;
+      return Math.random() * (cc.winSize.width - 40) + 20;
     },
     getRotateAngle: function() {
       return Math.random() * 360;
@@ -72,10 +64,13 @@
         error = error1;
         LogTool.c("fun is not a function");
       }
+      LogTool.c("startAction  begin");
+      LogTool.c("@moveAction" + this.moveAction);
       this.runAction(this.moveAction);
       if (THIS.isRotation) {
-        return this.runAction(this.rotateAction);
+        this.runAction(this.rotateAction);
       }
+      return LogTool.c("startAction  finish");
     },
     pauseAction: function(fun) {
       var error, error1;
@@ -143,23 +138,23 @@
             }
           } catch (error1) {
             error = error1;
-            return LogTool.e(error);
+            return LogTool.c(error);
           }
         }
       });
     },
     update: function(dt) {
       var error, error1;
-      if (this.y < -(this.height / 2 * 3)) {
+      if (this.y < -(this.height / 2)) {
         this.cleanup();
-        LogTool.c(this.lbNumber.string);
+        LogTool.c("@lbNumber.string   ： " + this.lbNumber.string);
         try {
           if (typeof this.finishCallback === "function") {
             return this.finishCallback();
           }
         } catch (error1) {
           error = error1;
-          return LogTool.e(error);
+          return LogTool.c(error);
         }
       }
     }

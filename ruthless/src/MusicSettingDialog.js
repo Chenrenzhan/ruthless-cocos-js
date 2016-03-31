@@ -61,7 +61,11 @@
       return cc.eventManager.addListener(this.listener().clone(), this.close);
     },
     selectOpen: function() {
+      if (!THIS.musicState) {
+        cc.audioEngine.playMusic(res.bgm, true);
+      }
       THIS.musicState = true;
+      THIS.LS.setItem(THIS.MUSIC_STATE, THIS.musicState + "");
       if (this.open != null) {
         this.open.selected();
       }
@@ -70,7 +74,11 @@
       }
     },
     selectClose: function() {
+      if (THIS.musicState) {
+        cc.audioEngine.stopMusic(true);
+      }
       THIS.musicState = false;
+      THIS.LS.setItem(THIS.MUSIC_STATE, THIS.musicState + "");
       if (this.open != null) {
         this.open.unselected();
       }

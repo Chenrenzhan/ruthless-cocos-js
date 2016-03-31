@@ -2,7 +2,7 @@
     "project_type": "javascript",
 
     "debugMode" : 1,
-    "showFPS" : true,
+    "showFPS" : false,
     "frameRate" : 60,
     "noCache" : false,
     "id" : "gameCanvas",
@@ -14,11 +14,15 @@
 
     "jsList" : [
         "src/resource.js",
+        "src/library/moment.js",
 
-        "src/BaseUtil/InitUtil.js",
-        "src/BaseUtil/BaseLayer.js",
         "src/BaseUtil/LogTool.js",
+        "src/BaseUtil/InitUtil.js",
+        "src/BaseUtil/DataSettings.js",
+        "src/BaseUtil/AudioManager.js",
+        "src/BaseUtil/BaseLayer.js",
         "src/BaseUtil/PopDialog.js",
+
         "src/widget/Dialog.js",
         "src/widget/MovingNumber.js",
 
@@ -26,11 +30,13 @@
         "src/LoadingScene.js",
         "src/LoaderScene.js",
         "src/MenuDialog.js",
+        "src/AboutGameDialog.js",
         "src/PlayGameScene.js",
         "src/MainGameScene.js",
         "src/GameSettingDialog.js",
         "src/MusicSettingDialog.js",
         "src/DifficultSettingDialog.js",
-        "src/BackConfirmDialog.js"
+        "src/BackConfirmDialog.js",
+        "src/RegameDialog.js"
     ]
 }

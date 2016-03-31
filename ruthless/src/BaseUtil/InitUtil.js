@@ -2,21 +2,33 @@
 (function() {
   this.THIS = this;
 
+  this.LS = cc.sys.localStorage;
+
+  this.MUSIC_STATE = "music_state";
+
+  this.GAME_DIFFICULT = "game_difficult";
+
+  this.HIGH_CLASSIC = "high_classics";
+
+  this.HIGH_CHALLENGE = "high_challenge";
+
+  this.HIGH_ARCADE = "high_arcade";
+
   this.designWinSize = new cc.p(1280, 720);
 
   this.resolutionPolicy = cc.ResolutionPolicy.SHOW_ALL;
 
   this.winSize = cc.winSize;
 
-  this.loadResourceDelay = 0;
+  this.loadResourceDelay = 0.2;
 
-  this.loadFinishDelay = 0;
+  this.loadFinishDelay = 0.5;
 
   this.nextDialogDelay = 0.3;
 
   this.isCloseDialogOutside = true;
 
-  this.musicState = true;
+  this.musicState = false;
 
   this.difficult = {
     low: 0,
@@ -33,15 +45,30 @@
   };
 
   this.highestRecord = {
-    classics: 23,
-    challenge: 18,
-    arcade: 14
+    classics: 0,
+    challenge: 0,
+    arcade: 0
   };
 
   this.countDown = {
-    classics: 0,
-    challenge: 3,
-    arcade: 3
+    classics: null,
+    challenge: "03:00",
+    arcade: "03:00"
+  };
+
+  this.difficultScope = {
+    low: {
+      min: 0,
+      max: 50
+    },
+    middle: {
+      min: 0,
+      max: 100
+    },
+    high: {
+      min: -100,
+      max: 100
+    }
   };
 
   this.maxError = 3;
@@ -53,6 +80,22 @@
   this.selectedNumberColor = cc.color(25, 200, 25, 255);
 
   this.numberCount = 6;
+
+  this.accelerometer = {
+    low: 0.01,
+    middle: 0.02,
+    high: 0.03
+  };
+
+  this.randomFall = 3;
+
+  this.isEmpty = function(str) {
+    if (str !== null || str !== "undefined" || str !== "") {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
 }).call(this);
 

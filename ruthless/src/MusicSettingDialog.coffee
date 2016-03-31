@@ -60,11 +60,17 @@
     cc.eventManager.addListener @listener().clone(), @close
 
   selectOpen :  ->
+    if not THIS.musicState
+      cc.audioEngine.playMusic(res.bgm, true)
     THIS.musicState = true
+    THIS.LS.setItem THIS.MUSIC_STATE, THIS.musicState + ""
     @open.selected() if @open?
     @close.unselected() if @close?
   selectClose :  ->
+    if THIS.musicState
+      cc.audioEngine.stopMusic(true)
     THIS.musicState = false
+    THIS.LS.setItem THIS.MUSIC_STATE, THIS.musicState + ""
     @open.unselected() if @open?
     @close.selected() if @close?
 
@@ -86,14 +92,6 @@
           return true
         # 返回false，事件不继续传递到onTouchMived和onTouchEnd事件
         return false;
-
-  #    onTouchMoved: (touch, event) ->
-  #      # 触摸移动时触发
-  #      LogTool.c "onTouchMoved"
-  #      target = event.getCurrentTarget()
-  #      delta = touch.getDelta()
-  #      target.x += delta.x
-  #      target.y += delta.y
 
       onTouchEnded: (touch, event) ->
         # 点击事件结束处理

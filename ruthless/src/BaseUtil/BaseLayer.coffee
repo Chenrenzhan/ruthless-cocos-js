@@ -18,11 +18,11 @@
 
 			#设置当前层里面所有节点的描点也和该层相同
 			@ignoreAnchorPointForPosition false
-			@setContentSize THIS.winSize
-			@setPosition cc.p THIS.winSize.width/2, THIS.winSize.height/2
+			@setContentSize cc.winSize
+			@setPosition cc.p cc.winSize.width/2, cc.winSize.height/2
 
 		#开启底层不可点击触摸（层以下的UI都不可被点击）
-		if this._oktouch
+		if @_oktouch
 			#点击时间
 			cc.eventManager.addListener
 				event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -32,7 +32,7 @@
 			, @
 
 		#开启打开窗体是带的特效
-		if @._showbgAcion
+		if @_showbgAcion
 			self = this
 			self.setScale(0.8)
 			if self isnt null

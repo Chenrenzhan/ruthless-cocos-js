@@ -64,6 +64,7 @@
       }, this.btnSetting);
     },
     initAboutBtn: function() {
+      var self;
       this.btnAbout = new ccui.Button();
       this.btnAbout.loadTextureNormal(res.igBtnAboutGame, ccui.Widget.LOCAL_TEXTURE);
       this.btnAbout.setPressedActionEnabled(true);
@@ -73,9 +74,14 @@
         y: 100
       });
       this.dialogLayer.addChild(this.btnAbout, 5);
+      self = this;
       return this.btnAbout.addTouchEventListener(function(touch, event) {
         if (event === ccui.Widget.TOUCH_ENDED) {
-          return LogTool.c("点击关于游戏按钮");
+          LogTool.c("点击关于游戏按钮");
+          self.dialog.popDialog.hidden();
+          return self.scheduleOnce(function() {
+            return self.addChild(new AboutGameDialog(), 5);
+          }, THIS.nextDialogDelay);
         }
       }, this.btnAbout);
     }

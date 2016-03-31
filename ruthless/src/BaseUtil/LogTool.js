@@ -4,17 +4,7 @@
     OPENLOGFLAG: true,
     c: function(logMsg) {
       if (this.OPENLOGFLAG) {
-        return console.log("NormalLog : " + logMsg);
-      }
-    },
-    e: function(errMsg) {
-      if (this.OPENLOGFLAG) {
-        return console.error("ErrorLog : " + errMsg);
-      }
-    },
-    dir: function(obj) {
-      if (this.OPENLOGFLAG) {
-        return console.dir(obj);
+        return cc.log("NormalLog : " + logMsg);
       }
     }
   };

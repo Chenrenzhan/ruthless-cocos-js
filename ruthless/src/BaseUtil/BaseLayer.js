@@ -14,8 +14,8 @@
         this._bgFrame = bgFrame;
         this.setAnchorPoint(cc.p(0.5, 0.5));
         this.ignoreAnchorPointForPosition(false);
-        this.setContentSize(THIS.winSize);
-        this.setPosition(cc.p(THIS.winSize.width / 2, THIS.winSize.height / 2));
+        this.setContentSize(cc.winSize);
+        this.setPosition(cc.p(cc.winSize.width / 2, cc.winSize.height / 2));
       }
       if (this._oktouch) {
         cc.eventManager.addListener({

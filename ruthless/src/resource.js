@@ -1,5 +1,12 @@
 var res = {
-    //HelloWorld_png : "res/HelloWorld.png",
+    HelloWorld_png : "res/HelloWorld.png",
+    CloseNormal_png : "res/CloseNormal.png",
+    CloseSelected_png : "res/CloseSelected.png",
+
+    setting : "res/setting/setting.json",
+
+    bgm : "res/audio/bgm.mp3",
+
     // ui image resource
     igMainBg : "res/ui/main_bg.png",
     igDialogBg : "res/ui/dialog_bg.png",
@@ -35,6 +42,7 @@ var res = {
     igMusicOpenSelected : "res/ui/menu-page/setting/music_open_selected.png",
     igBtnMusic : "res/ui/menu-page/setting/music.png",
     igBtnDifficult : "res/ui/menu-page/setting/difficult.png",
+    igAboutGame : "res/ui/menu-page/setting/about_game.png",
 
     // menu-page/play-page
     igBtnBackArrows : "res/ui/play-page/back_arrows.png",
@@ -43,6 +51,10 @@ var res = {
     igBtnCancel : "res/ui/play-page/btn_cancel.png",
     igBtnOk : "res/ui/play-page/btn_ok.png",
     igScoreFrame : "res/ui/play-page/score_frame.png",
+    igFlower : "res/ui/play-page/flower.png",
+    igBtnBack : "res/ui/play-page/btn_back.png",
+    igBtnAgain : "res/ui/play-page/btn_again.png",
+    igBtnHighAgain : "res/ui/play-page/high_score_again.png",
 
 };
 

@@ -76,6 +76,7 @@
     },
     selectLow: function() {
       THIS.gameDifficult = THIS.difficult.low;
+      THIS.LS.setItem(THIS.GAME_DIFFICULT, THIS.gameDifficult);
       if (this.low != null) {
         this.low.selected();
       }
@@ -88,6 +89,7 @@
     },
     selectMiddle: function() {
       THIS.gameDifficult = THIS.difficult.middle;
+      THIS.LS.setItem(THIS.GAME_DIFFICULT, THIS.gameDifficult);
       if (this.low != null) {
         this.low.unselected();
       }
@@ -100,6 +102,7 @@
     },
     selectHigh: function() {
       THIS.gameDifficult = THIS.difficult.high;
+      THIS.LS.setItem(THIS.GAME_DIFFICULT, THIS.gameDifficult);
       if (this.low != null) {
         this.low.unselected();
       }

@@ -2,10 +2,10 @@
   主游戏页面
 ###
 
-@MainGameScene = BaseLayer.extend
-#main bg sprite
+@MainGameLayer = cc.Layer.extend
+  #main bg sprite
   stMainBg: null
-#title sprite
+  #title sprite
   stTitle : null
   #classics button
   btnClassics: null
@@ -18,6 +18,10 @@
 
   ctor : ->
     @_super()
+
+    if THIS.musicState
+      cc.audioEngine.playMusic(res.bgm, true);
+
     @initMainBg()
 
     @initTitle()
@@ -32,16 +36,16 @@
   initMainBg : ->
     @stMainBg = new cc.Sprite res.igMainBg
     @stMainBg.attr
-      x: THIS.winSize.width / 2,
-      y: THIS.winSize.height / 2
+      x: cc.winSize.width / 2,
+      y: cc.winSize.height / 2
 
     @addChild @stMainBg, 0
 
   initTitle : ->
     @stTitle = new cc.Sprite res.igTitle
     @stTitle.attr
-      x: THIS.winSize.width / 2
-      y: THIS.winSize.height - 130
+      x: cc.winSize.width / 2
+      y: cc.winSize.height - 130
     @addChild @stTitle, 0
 
   btnListener : cc.EventListener.create
@@ -54,11 +58,8 @@
       # 获取当前点击点所在相对按钮的位置坐标
       locationInNode = target.convertToNodeSpace touch.getLocation()
       s = target.getContentSize()
-      LogTool.c "sprite began... x = " + locationInNode.x + ", y = " + locationInNode.y
       rect = cc.rect target.x, target.y, s.width, s.height
-      LogTool.dir rect
       if  cc.rectContainsPoint rect, locationInNode        #点击范围判断检测
-        LogTool.c "sprite began... x = " + locationInNode.x + ", y = " + locationInNode.y
         target.opacity = 180
         return true
 
@@ -79,8 +80,6 @@
       # 点击事件结束处理
       LogTool.c "onTouchEnded"
       target = event.getCurrentTarget();
-      LogTool.dir target
-      LogTool.c "tag : " + target.getTag()
 
 
   initBtnClassics : ->
@@ -107,7 +106,7 @@
     @btnChallenge.loadTextureNormal res.igBtnChallenge, ccui.Widget.LOCAL_TEXTURE
     @btnChallenge.setPressedActionEnabled true
     @btnChallenge.attr
-      x: THIS.winSize.width / 2
+      x: cc.winSize.width / 2
       y: 180
 
     @btnChallenge.setTouchEnabled true
@@ -125,7 +124,7 @@
     @btnArcade.loadTextureNormal res.igBtnArcade, ccui.Widget.LOCAL_TEXTURE
     @btnArcade.setPressedActionEnabled true
     @btnArcade.attr
-      x: THIS.winSize.width - 230
+      x: cc.winSize.width - 230
       y: 330
 
     @btnArcade.setTouchEnabled true
@@ -157,3 +156,13 @@
         self.addChild menuDialog, 10
     , @btnMenu
 
+
+
+@MainGameScene = cc.Scene.extend
+  onEnter: ->
+    this._super()
+    layer = new MainGameLayer()
+#    layer.attr
+#      x : -cc.winSize.width / 2
+#      y : -cc.winSize.height / 2
+    @addChild layer

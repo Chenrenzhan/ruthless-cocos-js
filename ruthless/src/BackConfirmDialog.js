@@ -6,28 +6,28 @@
 
 (function() {
   this.BackConfirmDialog = Dialog.extend({
-    btnOk: null,
-    btnCancel: null,
+    btnAgain: null,
+    btnBack: null,
     funOk: null,
     funCancel: null,
     ctor: function() {
       this._super();
-      this.initBtnOk();
-      return this.initBtnCancel();
+      this.initBtnAgain();
+      return this.initBtnBack();
     },
-    initBtnOk: function() {
+    initBtnAgain: function() {
       var self;
-      this.btnOk = new ccui.Button();
-      this.btnOk.loadTextureNormal(res.igBtnOk, ccui.Widget.LOCAL_TEXTURE);
-      this.btnOk.setPressedActionEnabled(true);
-      this.btnOk.setTouchEnabled(true);
-      this.btnOk.attr({
+      this.btnAgain = new ccui.Button();
+      this.btnAgain.loadTextureNormal(res.igBtnOk, ccui.Widget.LOCAL_TEXTURE);
+      this.btnAgain.setPressedActionEnabled(true);
+      this.btnAgain.setTouchEnabled(true);
+      this.btnAgain.attr({
         x: this.dialogLayer.width / 2,
-        y: this.dialogLayer.height / 2 + this.btnOk.height / 2 + 25
+        y: this.dialogLayer.height / 2 + this.btnAgain.height / 2 + 25
       });
-      this.dialogLayer.addChild(this.btnOk, 5);
+      this.dialogLayer.addChild(this.btnAgain, 5);
       self = this;
-      return this.btnOk.addTouchEventListener(function(touch, event) {
+      return this.btnAgain.addTouchEventListener(function(touch, event) {
         var error, error1;
         if (event === ccui.Widget.TOUCH_ENDED) {
           LogTool.c("点击确认关闭按钮");
@@ -44,21 +44,21 @@
           self.popDialog.hidden();
           return cc.director.popScene();
         }
-      }, this.btnOk);
+      }, this.btnAgain);
     },
-    initBtnCancel: function() {
+    initBtnBack: function() {
       var self;
-      this.btnCancel = new ccui.Button();
-      this.btnCancel.loadTextureNormal(res.igBtnCancel, ccui.Widget.LOCAL_TEXTURE);
-      this.btnCancel.setPressedActionEnabled(true);
-      this.btnCancel.setTouchEnabled(true);
-      this.btnCancel.attr({
+      this.btnBack = new ccui.Button();
+      this.btnBack.loadTextureNormal(res.igBtnCancel, ccui.Widget.LOCAL_TEXTURE);
+      this.btnBack.setPressedActionEnabled(true);
+      this.btnBack.setTouchEnabled(true);
+      this.btnBack.attr({
         x: this.dialogLayer.width / 2,
-        y: this.dialogLayer.height / 2 - this.btnCancel.height / 2 - 25
+        y: this.dialogLayer.height / 2 - this.btnBack.height / 2 - 25
       });
-      this.dialogLayer.addChild(this.btnCancel, 5);
+      this.dialogLayer.addChild(this.btnBack, 5);
       self = this;
-      return this.btnCancel.addTouchEventListener(function(touch, event) {
+      return this.btnBack.addTouchEventListener(function(touch, event) {
         var error, error1;
         if (event === ccui.Widget.TOUCH_ENDED) {
           LogTool.c("点击取消按钮");
@@ -74,7 +74,7 @@
           }
           return self.popDialog.hidden();
         }
-      }, this.btnCancel);
+      }, this.btnBack);
     }
   });
 

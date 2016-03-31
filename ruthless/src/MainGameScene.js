@@ -5,7 +5,7 @@
  */
 
 (function() {
-  this.MainGameScene = BaseLayer.extend({
+  this.MainGameLayer = cc.Layer.extend({
     stMainBg: null,
     stTitle: null,
     btnClassics: null,
@@ -14,6 +14,9 @@
     btnMenu: null,
     ctor: function() {
       this._super();
+      if (THIS.musicState) {
+        cc.audioEngine.playMusic(res.bgm, true);
+      }
       this.initMainBg();
       this.initTitle();
       this.initBtnClassics();
@@ -25,16 +28,16 @@
     initMainBg: function() {
       this.stMainBg = new cc.Sprite(res.igMainBg);
       this.stMainBg.attr({
-        x: THIS.winSize.width / 2,
-        y: THIS.winSize.height / 2
+        x: cc.winSize.width / 2,
+        y: cc.winSize.height / 2
       });
       return this.addChild(this.stMainBg, 0);
     },
     initTitle: function() {
       this.stTitle = new cc.Sprite(res.igTitle);
       this.stTitle.attr({
-        x: THIS.winSize.width / 2,
-        y: THIS.winSize.height - 130
+        x: cc.winSize.width / 2,
+        y: cc.winSize.height - 130
       });
       return this.addChild(this.stTitle, 0);
     },
@@ -47,11 +50,8 @@
         target = event.getCurrentTarget();
         locationInNode = target.convertToNodeSpace(touch.getLocation());
         s = target.getContentSize();
-        LogTool.c("sprite began... x = " + locationInNode.x + ", y = " + locationInNode.y);
         rect = cc.rect(target.x, target.y, s.width, s.height);
-        LogTool.dir(rect);
         if (cc.rectContainsPoint(rect, locationInNode)) {
-          LogTool.c("sprite began... x = " + locationInNode.x + ", y = " + locationInNode.y);
           target.opacity = 180;
           return true;
         }
@@ -68,9 +68,7 @@
       onTouchEnded: function(touch, event) {
         var target;
         LogTool.c("onTouchEnded");
-        target = event.getCurrentTarget();
-        LogTool.dir(target);
-        return LogTool.c("tag : " + target.getTag());
+        return target = event.getCurrentTarget();
       }
     }),
     initBtnClassics: function() {
@@ -100,7 +98,7 @@
       this.btnChallenge.loadTextureNormal(res.igBtnChallenge, ccui.Widget.LOCAL_TEXTURE);
       this.btnChallenge.setPressedActionEnabled(true);
       this.btnChallenge.attr({
-        x: THIS.winSize.width / 2,
+        x: cc.winSize.width / 2,
         y: 180
       });
       this.btnChallenge.setTouchEnabled(true);
@@ -120,7 +118,7 @@
       this.btnArcade.loadTextureNormal(res.igBtnArcade, ccui.Widget.LOCAL_TEXTURE);
       this.btnArcade.setPressedActionEnabled(true);
       this.btnArcade.attr({
-        x: THIS.winSize.width - 230,
+        x: cc.winSize.width - 230,
         y: 330
       });
       this.btnArcade.setTouchEnabled(true);
@@ -155,6 +153,15 @@
           return self.addChild(menuDialog, 10);
         }
       }, this.btnMenu);
+    }
+  });
+
+  this.MainGameScene = cc.Scene.extend({
+    onEnter: function() {
+      var layer;
+      this._super();
+      layer = new MainGameLayer();
+      return this.addChild(layer);
     }
   });
 
