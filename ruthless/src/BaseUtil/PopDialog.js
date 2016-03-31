@@ -62,7 +62,7 @@
       return cc.eventManager.addListener(this.listener, this.blackLayer);
     },
     deleteListener: function() {
-      return cc.eventManager.removeListener(this.listener);
+      return cc.eventManager.removeListener(this);
     },
     show: function(fun) {
       var fadeIn, func, scaleTo, self, seq;

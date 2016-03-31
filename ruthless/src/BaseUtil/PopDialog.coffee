@@ -66,8 +66,9 @@
         cc.eventManager.addListener @listener, @blackLayer
 
     #删除
-    deleteListener: ->
-        cc.eventManager.removeListener @listener
+    deleteListener: ()->
+        # 官方PAI是cc.eventManager.removeListener(listener),但是在这里却不行，改为this就可以
+        cc.eventManager.removeListener @
 
     #显示
     show: (fun) ->
