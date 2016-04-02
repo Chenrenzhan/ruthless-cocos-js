@@ -54,6 +54,7 @@
                     if not (tx >= x and tx <= x + w and ty >= y and ty <= y + h)
                         self.flag = true
                         self.hidden(self.hiddenCallback)
+                        return false
 
                 return true
 
@@ -67,8 +68,8 @@
 
     #删除
     deleteListener: ()->
-        # 官方PAI是cc.eventManager.removeListener(listener),但是在这里却不行，改为this就可以
-        cc.eventManager.removeListener @
+        # 官方PAI是cc.eventManager.removeListener(listener),但是在这里却不行，改为this后，在关了一个接着弹出另一个dialog时，第二个就不会响应时间了
+        cc.eventManager.removeListener @listener
 
     #显示
     show: (fun) ->

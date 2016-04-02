@@ -48,6 +48,7 @@
             if (!(tx >= x && tx <= x + w && ty >= y && ty <= y + h)) {
               self.flag = true;
               self.hidden(self.hiddenCallback);
+              return false;
             }
           }
           return true;
@@ -62,7 +63,7 @@
       return cc.eventManager.addListener(this.listener, this.blackLayer);
     },
     deleteListener: function() {
-      return cc.eventManager.removeListener(this);
+      return cc.eventManager.removeListener(this.listener);
     },
     show: function(fun) {
       var fadeIn, func, scaleTo, self, seq;
